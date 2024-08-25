@@ -17,14 +17,12 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordEC = TextEditingController();
   final _confirmPasswordEC = TextEditingController();
   final _globalKey = GlobalKey<FormState>();
-  RegisterController? controller;
 
   @override
   void dispose() {
     _emailEC.dispose();
     _passwordEC.dispose();
     _confirmPasswordEC.dispose();
-    controller?.dispose();
     super.dispose();
   }
 
@@ -33,15 +31,18 @@ class _RegisterPageState extends State<RegisterPage> {
     super.initState();
     context.read<RegisterController>().addListener(
       () {
-        controller = context.read<RegisterController>();
-        String? error = controller?.error;
-        bool success = controller?.success ?? false;
+        if (!mounted) return;
+
+        final RegisterController controller = context.read<RegisterController>();
+        String? error = controller.error;
+        bool success = controller.success;
 
         if (success) {
-          Navigator.of(context).pop(context);
+          Navigator.of(context).pop();
         } else if (error != null && error.isNotEmpty) {
+          print("HAHAHAHHAHAHAHAHAHHAHAHAHHAHAHAHAH");
           final snackBar = SnackBar(
-            content: Text(error),
+            content: Text('Erro: $error'),
             backgroundColor: Colors.red,
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);

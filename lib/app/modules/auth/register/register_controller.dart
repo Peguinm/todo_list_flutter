@@ -10,14 +10,14 @@ class RegisterController extends ChangeNotifier {
   RegisterController({required UserService userService})
       : _userService = userService;
 
-  void registerUser(String email, String password) {
+  Future<void> registerUser(String email, String password) async {
     try {
 
       error = null;
       success = false;
 
       // Pode subir uma AuthException
-      final user = _userService.register(email: email, password: password);
+      final user = await _userService.register(email: email, password: password);
 
       if (user != null) {
         success = true;
