@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:to_do_list/app/core/notifier/default_listener.dart';
+import 'package:to_do_list/app/core/ui/messages.dart';
 import 'package:to_do_list/app/core/widgets/todo_list_logo.dart';
 import 'package:to_do_list/app/core/widgets/todo_list_text_input.dart';
 import 'package:to_do_list/app/modules/auth/register/register_controller.dart';
@@ -29,26 +31,28 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    context.read<RegisterController>().addListener(
-      () {
-        if (!mounted) return;
 
-        final RegisterController controller = context.read<RegisterController>();
-        String? error = controller.error;
-        bool success = controller.success;
-
-        if (success) {
-          Navigator.of(context).pop();
-        } else if (error != null && error.isNotEmpty) {
-          print("HAHAHAHHAHAHAHAHAHHAHAHAHHAHAHAHAH");
-          final snackBar = SnackBar(
-            content: Text('Erro: $error'),
-            backgroundColor: Colors.red,
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
+    DefaultListener(changeNotifier: context.read<RegisterController>())
+        .listener(
+      context: context,
+      succesCallback: (changeNotifer, listener) {
+        Navigator.of(context).pop();
+        Messages.of(context).showInfo('Usuário cadastrado com sucesso');
       },
     );
+    // final RegisterController controller = context.read<RegisterController>();
+    // String? error = controller.error;
+    // bool success = controller.success;
+
+    // if (success) {
+    //   Navigator.of(context).pop();
+    // } else if (error != null && error.isNotEmpty) {
+    //   final snackBar = SnackBar(
+    //     content: Text('Erro: $error'),
+    //     backgroundColor: Colors.red,
+    //   );
+    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // }
   }
 
   @override
@@ -155,7 +159,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           final email = _emailEC.text;
                           final password = _passwordEC.text;
 
-                          context.read<RegisterController>().registerUser(email, password);
+                          context
+                              .read<RegisterController>()
+                              .registerUser(email, password);
                         }
                       },
                       child: const Padding(

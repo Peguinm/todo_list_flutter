@@ -74,6 +74,7 @@ class SqliteConnectionFactory {
 
     batch.commit();
   }
+  
   Future<void> _onUpgrade(Database db, int oldVersion, int version) async {
     //mesma estrutura de cima
     final batch = db.batch();

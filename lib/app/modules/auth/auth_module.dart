@@ -12,7 +12,7 @@ class AuthModule extends PageModule {
       : super(
           providers: [
             ChangeNotifierProvider(
-              create: (context) => LoginController(),
+              create: (context) => LoginController(userService: context.read()),
             ),
             ChangeNotifierProvider(
               create: (context) => RegisterController(userService: context.read()),

@@ -10,6 +10,7 @@ class TodoListTextInput extends StatelessWidget {
   final ValueNotifier<bool> isObscureVN;
   final TextEditingController? textController;
   final FormFieldValidator<String>? validator;
+  final FocusNode? focusNode;
 
   TodoListTextInput({
     super.key,
@@ -19,6 +20,7 @@ class TodoListTextInput extends StatelessWidget {
     this.suffixIconButton,
     this.validator,
     this.textController,
+    this.focusNode,
   })  : assert(isObscure == true ? suffixIconButton == null : true,
             'isObscure + suffixIconButton não da bom'),
         isObscureVN = ValueNotifier(isObscure);
@@ -31,6 +33,8 @@ class TodoListTextInput extends StatelessWidget {
         return TextFormField(
           validator: validator,
           controller: textController,
+          focusNode: focusNode,
+          //
           cursorColor: ThemeDefinition.primaryColor,
           cursorErrorColor: Colors.red,
           //

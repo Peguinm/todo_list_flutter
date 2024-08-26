@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/app/core/database/sqlite_adm_connection.dart';
+import 'package:to_do_list/app/core/navigator/todo_list_navigator.dart';
 import 'package:to_do_list/app/core/ui/theme_definition.dart';
 import 'package:to_do_list/app/modules/auth/auth_module.dart';
+import 'package:to_do_list/app/modules/home/home_page_module.dart';
 import 'package:to_do_list/app/modules/splash/splash_page.dart';
 
 class AppWidget extends StatefulWidget {
@@ -30,6 +32,7 @@ class _AppWidgetState extends State<AppWidget> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "To do list provider",
+      navigatorKey: TodoListNavigator.navigatorKey,
       theme: ThemeDefinition.theme,
       debugShowCheckedModeBanner: false,
       //* Contrução antiga de page com providers, que foi substituida pela utilização de métodos
@@ -46,8 +49,8 @@ class _AppWidgetState extends State<AppWidget> {
       //* Construção nova
       routes: {
         ...AuthModule().routes,
+        ...HomePageModule().routes,
       },
-      initialRoute: '/login',
       home: const SplashPage(),
     );
   }
