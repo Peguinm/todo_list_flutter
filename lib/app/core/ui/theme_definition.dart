@@ -5,7 +5,7 @@ class ThemeDefinition {
   static const primaryColor = Color(0xff57b091);
   static const secondaryColor = Color(0xff97d6c1);
   static const accentColor = Color(0xff69d0ad);
-  static const backgroudColor = Color(0xfff7faf9);
+  static const backgroudColor = Color.fromARGB(255, 233, 233, 233);
   static const textColor = Color(0xff070a09);
   static const textColorLight = Color.fromARGB(255, 255, 255, 255);
   static const linkColor = Color.fromARGB(255, 28, 162, 252);

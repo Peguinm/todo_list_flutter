@@ -23,4 +23,16 @@ abstract class PageModule {
       ),
     );
   }
+
+  Widget getPage(String path, BuildContext context) {
+    final widgetBuilder = routes[path];
+    if (widgetBuilder != null) {
+      return PageBuilder(
+        pageBuilder: widgetBuilder,
+        providers: _providers,
+      );
+    }
+
+    throw Exception();
+  }
 }

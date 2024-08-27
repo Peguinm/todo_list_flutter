@@ -17,4 +17,6 @@ abstract class UserService {
 
   Future<void> logout();
 
+  Future<void> changeUsername(String name);
+
 }

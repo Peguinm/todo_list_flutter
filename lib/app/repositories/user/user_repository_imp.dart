@@ -129,4 +129,14 @@ class UserRepositoryImp implements UserRepository {
     await GoogleSignIn().signOut();
     _firebaseAuth.signOut();
   }
+  
+  @override
+  Future<void> changeUsername(String name) async {
+    final User? user = _firebaseAuth.currentUser;
+
+    if (user != null) {
+      await user.updateDisplayName(name);
+      user.reload(); //* Autoexplicativo
+    }
+  }
 }
