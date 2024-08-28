@@ -6,6 +6,7 @@ class TodoListTextInput extends StatelessWidget {
   final String label;
   final bool isObscure;
   final Icon? suffixIcon;
+  final String? hint;
   final IconButton? suffixIconButton;
   final ValueNotifier<bool> isObscureVN;
   final TextEditingController? textController;
@@ -16,6 +17,7 @@ class TodoListTextInput extends StatelessWidget {
     super.key,
     required this.label,
     this.isObscure = false,
+    this.hint,
     this.suffixIcon,
     this.suffixIconButton,
     this.validator,
@@ -38,12 +40,13 @@ class TodoListTextInput extends StatelessWidget {
           cursorColor: ThemeDefinition.primaryColor,
           cursorErrorColor: Colors.red,
           //
-          obscureText: isObscureVN.value,
+          obscureText: isObscureVN.value,        
           //
           decoration: InputDecoration(
             isDense: true,
             //
             label: Text(label),
+            hintText: hint,
             labelStyle:
                 const TextStyle(fontSize: 15, color: ThemeDefinition.textColor),
             //
@@ -70,7 +73,7 @@ class TodoListTextInput extends StatelessWidget {
             //
             errorBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(3.0)),
-              borderSide: BorderSide(color: Colors.red),
+              borderSide: BorderSide(color: Colors.red),              
             ),
             //
             suffixIcon: suffixIcon ??

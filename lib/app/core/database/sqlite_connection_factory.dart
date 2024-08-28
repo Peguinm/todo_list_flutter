@@ -35,6 +35,9 @@ class SqliteConnectionFactory {
     final String databasePathFinal = join(databasePath, _DATABASE_NAME);
 
     if (_db == null) {
+      //! Expurgador de database - Somente adultos podem mexer
+      // databaseFactory.deleteDatabase(databasePathFinal);
+
       //* garantindo que não vai acontecer mais que uma chamada para connect
       await _lock.synchronized(() async {
         _db = await openDatabase(
@@ -59,7 +62,7 @@ class SqliteConnectionFactory {
   //* métodods de abertura do db
   Future<void> _onConfigure(Database db) async {
     //ligando as foreign keys
-    await db.execute('PRAGMA foreign_keys on');
+    await db.execute('PRAGMA foreign_keys = on');
   }
   Future<void> _onCreate(Database db, int version) async {
     final batch = db.batch();

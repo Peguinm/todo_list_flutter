@@ -1,20 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_list/app/core/notifier/default_change_notifier.dart';
+import 'package:to_do_list/app/core/notifier/default_listener.dart';
 import 'package:to_do_list/app/core/ui/theme_definition.dart';
+import 'package:to_do_list/app/core/widgets/todo_list_text_input.dart';
 import 'package:to_do_list/app/modules/tasks/task_create_controller.dart';
-import 'package:to_do_list/app/modules/tasks/widgets/task_create_text_input.dart';
-import 'package:to_do_list/main.dart';
+import 'package:to_do_list/app/modules/tasks/widgets/date_button.dart';
+import 'package:validatorless/validatorless.dart';
 
-class TaskCreatePage extends StatelessWidget {
+class TaskCreatePage extends StatefulWidget {
+  final TaskCreateController _controller;
+
   TaskCreatePage({super.key, required TaskCreateController controller})
       : _controller = controller;
 
-  TaskCreateController _controller;
+  @override
+  State<TaskCreatePage> createState() => _TaskCreatePageState();
+}
+
+class _TaskCreatePageState extends State<TaskCreatePage> {
+  final _descriptionEC = TextEditingController();
+
+  final _formState = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    DefaultListener(
+      changeNotifier: widget._controller,
+    ).listener(
+      context: context,
+      succesCallback: (changeNotifer, listener) {        
+        print('---------------------------- SUCCESS');
+        Navigator.of(context).pop(context);
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _descriptionEC.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,      
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () {
@@ -68,7 +101,14 @@ class TaskCreatePage extends StatelessWidget {
       floatingActionButton: SizedBox(
         width: 100,
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            final bool isValid = _formState.currentState?.validate() ?? false;
+
+            if (isValid) {
+              widget._controller.save(context.read<TaskCreateController>().selectedDate, _descriptionEC.text);
+            }
+
+          },
           backgroundColor: ThemeDefinition.primaryColor,
           child: const FittedBox(
             fit: BoxFit.fill,
@@ -103,35 +143,18 @@ class TaskCreatePage extends StatelessWidget {
               color: Colors.grey.withOpacity(.5),
             ),
             Form(
+              key: _formState,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TaskCreateTextInput(),
+                  TodoListTextInput(
+                    label: '',
+                    hint: 'Descrição da tarefa',
+                    textController: _descriptionEC,
+                    validator: Validatorless.required('Descrição obrigatória'),
+                  ),
                   const SizedBox(height: 20),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(3.0)),
-                      border: Border.all(
-                        color: ThemeDefinition.primaryColor,
-                        width: 1
-                      ),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () {},                    
-                      style: const ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll<Color>(Colors.transparent),
-                        elevation: WidgetStatePropertyAll<double>(0.0),
-                        foregroundColor: WidgetStatePropertyAll<Color>(ThemeDefinition.primaryColor),
-                      ),                                                            
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.today, color: ThemeDefinition.primaryColor,),
-                          Text(' 10/10/2010'),
-                        ],
-                      ),
-                    ),
-                  )
+                  DateButton(),
                 ],
               ),
             ),

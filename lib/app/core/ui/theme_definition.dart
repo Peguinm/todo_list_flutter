@@ -11,6 +11,7 @@ class ThemeDefinition {
   static const linkColor = Color.fromARGB(255, 28, 162, 252);
 
   static ThemeData get theme => ThemeData(
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green),
         //
         primaryColor: primaryColor,
         //

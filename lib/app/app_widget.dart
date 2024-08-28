@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:to_do_list/app/core/database/sqlite_adm_connection.dart';
 import 'package:to_do_list/app/core/navigator/todo_list_navigator.dart';
 import 'package:to_do_list/app/core/ui/theme_definition.dart';
@@ -35,6 +36,13 @@ class _AppWidgetState extends State<AppWidget> {
       title: "To do list provider",
       navigatorKey: TodoListNavigator.navigatorKey,
       theme: ThemeDefinition.theme,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('pt', 'BR'),
+      ],
       debugShowCheckedModeBanner: false,
       //* Contrução antiga de page com providers, que foi substituida pela utilização de métodos
       // routes: <String, WidgetBuilder>{

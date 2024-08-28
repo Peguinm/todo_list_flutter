@@ -7,13 +7,13 @@ class MigrationV1 implements Migration {
   @override
   void create(Batch batch) {
 
-    batch.query(
+    batch.rawQuery(
       '''
       CREATE TABLE tasks(
-        id INT PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         description VARCHAR(500) NOT NULL,
         date DATETIME,
-        complete INT,
+        complete INT
       )
       '''
     );
