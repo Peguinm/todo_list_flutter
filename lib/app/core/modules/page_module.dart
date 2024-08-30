@@ -16,7 +16,7 @@ abstract class PageModule {
     return _routes.map(
       (key, pageBuilder) => MapEntry(
         key,
-        (BuildContext context) => PageBuilder(
+        (context) => PageBuilder(
           providers: _providers,
           pageBuilder: pageBuilder,
         ),

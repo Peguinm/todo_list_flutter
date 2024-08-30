@@ -7,23 +7,19 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Selector<MyAuthProvider, String>(
-            selector: (context, myAuthProvider) {
-              return myAuthProvider.user?.displayName ?? 'Indefinido';
-            },
-            builder: (_, value, __) {
-              return Text(
-                'Suma imediatamente $value!',
-                style: Theme.of(context).textTheme.titleLarge,
-              );
-            },
-          ),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),          
+      child: Selector<MyAuthProvider, String>(
+        selector: (context, myAuthProvider) {
+          return myAuthProvider.user?.displayName ?? 'Indefinido';
+        },
+        builder: (_, value, __) {
+          return Text(
+            'Olá, $value!',
+            style: Theme.of(context).textTheme.titleLarge,
+          );
+        },
+      ),
     );
   }
 }

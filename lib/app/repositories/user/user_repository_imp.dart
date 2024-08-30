@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:to_do_list/app/core/database/sqlite_connection_factory.dart';
 import 'package:to_do_list/app/exception/auth_exceptions.dart';
 import 'package:to_do_list/app/repositories/user/user_repository.dart';
 
@@ -128,6 +129,11 @@ class UserRepositoryImp implements UserRepository {
   Future<void> logout() async {
     await GoogleSignIn().signOut();
     _firebaseAuth.signOut();
+
+    final conn = await SqliteConnectionFactory().openConnection();
+    await conn.rawDelete('DELETE FROM tasks');
+    final res =  await conn.rawQuery('SELECT * FROM tasks');
+    print('Acabou: $res');
   }
   
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:to_do_list/app/core/notifier/default_change_notifier.dart';
 import 'package:to_do_list/app/core/notifier/default_listener.dart';
 import 'package:to_do_list/app/core/ui/theme_definition.dart';
 import 'package:to_do_list/app/core/widgets/todo_list_text_input.dart';
@@ -11,7 +10,7 @@ import 'package:validatorless/validatorless.dart';
 class TaskCreatePage extends StatefulWidget {
   final TaskCreateController _controller;
 
-  TaskCreatePage({super.key, required TaskCreateController controller})
+  const TaskCreatePage({super.key, required TaskCreateController controller})
       : _controller = controller;
 
   @override
@@ -31,7 +30,7 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
     ).listener(
       context: context,
       succesCallback: (changeNotifer, listener) {        
-        print('---------------------------- SUCCESS');
+        
         Navigator.of(context).pop(context);
       },
     );
@@ -105,7 +104,7 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
             final bool isValid = _formState.currentState?.validate() ?? false;
 
             if (isValid) {
-              widget._controller.save(context.read<TaskCreateController>().selectedDate, _descriptionEC.text);
+              widget._controller.save(context.read<TaskCreateController>().selectedDate, _descriptionEC.text);              
             }
 
           },

@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_list/app/core/ui/theme_definition.dart';
+import 'package:to_do_list/app/models/task_model.dart';
+import 'package:to_do_list/app/modules/home/home_controller.dart';
 
-class Task extends StatefulWidget {
-  const Task({super.key});
+class Task extends StatelessWidget {
+  final TaskModel model;
 
-  @override
-  State<Task> createState() => _TaskState();
-}
-
-class _TaskState extends State<Task> {
-  final checkVN = ValueNotifier<bool>(false);
+  const Task({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<HomeController>();
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
         boxShadow: [
           BoxShadow(
             blurRadius: 1,
@@ -24,33 +25,66 @@ class _TaskState extends State<Task> {
           )
         ],
       ),
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       child: IntrinsicHeight(
         child: ListTile(
-          contentPadding: EdgeInsets.all(7),
+          contentPadding: const EdgeInsets.all(7),
           titleAlignment: ListTileTitleAlignment.center,
-          leading: ValueListenableBuilder<bool>(
-            valueListenable: checkVN,
-            builder: (_, value, __) {
-              return Checkbox(
-                activeColor: ThemeDefinition.primaryColor,
-                value: value,
-                onChanged: (value) {
-                  checkVN.value = value ?? false;
+          leading: Checkbox(
+            activeColor: ThemeDefinition.primaryColor,
+            value: model.done,
+            onChanged: (value) {
+              context.read<HomeController>().checkOrUncheckTask(model);
+            },
+          ),
+          trailing: IconButton(
+            icon: const Icon(
+              Icons.delete,
+              color: Colors.grey,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Excluir Tarefa'),
+                    content: const Text('Tem certeza de que deseja excluir essa tarefa?'),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(3.0))
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Cancelar'),
+                      ),
+                      TextButton(
+                        onPressed: () {                          
+                          provider.deleteTaskAndRefresh(model.id);
+                          Navigator.of(context).pop();
+                        },
+                        style: const ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll<Color>(Colors.red),
+                        ),
+                        child: const Text('Excluir', style: TextStyle(color: Colors.white),),
+                      ),
+                    ],
+                  );
                 },
               );
             },
           ),
           title: Text(
-            'Title',
+            model.description,
             style: TextStyle(
-              decoration: true ? TextDecoration.lineThrough : null,
+              decoration: model.done ? TextDecoration.lineThrough : null,
             ),
           ),
           subtitle: Text(
-            '20/12/2020',
+            DateFormat('d/MM/y').format(model.date),
             style: TextStyle(
-              decoration: true ? TextDecoration.lineThrough : null,
+              decoration: model.done ? TextDecoration.lineThrough : null,
             ),
           ),
         ),

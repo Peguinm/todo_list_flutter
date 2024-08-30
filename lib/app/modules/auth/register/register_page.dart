@@ -36,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
         .listener(
       context: context,
       succesCallback: (changeNotifer, listener) {
-        Navigator.of(context).pop();
+        
         Messages.of(context).showInfo('Usuário cadastrado com sucesso');
       },
     );

@@ -60,6 +60,21 @@ class HomeDrawer extends StatelessWidget {
                   return AlertDialog(
                     title: const Text('Alterar Nome'),
                     content: TextField(
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: ThemeDefinition.primaryColor,
+                            width: 1,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: ThemeDefinition.primaryColor,
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      
                       onChanged: (value) {
                         nameChangeVN.value = value;
                       },
